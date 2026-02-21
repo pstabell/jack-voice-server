@@ -979,8 +979,8 @@ export default async function handler(req, res) {
         
         console.log(`Tool: ${name}`, args);
         
-        // Check permissions for this function
-        if (!modeHandler.canAccessFunction(name)) {
+        // Check permissions for this function (skip for internal mode)
+        if (!isInternal && !modeHandler.canAccessFunction(name)) {
           results.push({
             toolCallId: id,
             result: JSON.stringify({
@@ -1004,8 +1004,8 @@ export default async function handler(req, res) {
       const name = fc.name || fc.function?.name;
       const args = fc.parameters || fc.arguments || {};
       
-      // Check permissions for this function
-      if (!modeHandler.canAccessFunction(name)) {
+      // Check permissions for this function (skip for internal mode)
+      if (!isInternal && !modeHandler.canAccessFunction(name)) {
         return res.status(200).json({
           results: [{
             toolCallId: fc.id,
