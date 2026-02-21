@@ -934,9 +934,18 @@ export default async function handler(req, res) {
 
   try {
     const { message } = req.body;
+    
+    // Check for internal mode (bypasses PIN requirement)
+    const isInternal = req.query?.internal === 'true' || req.url?.includes('internal=true');
 
     // Initialize mode handler for this session
     const modeHandler = createModeHandler(message);
+    
+    // Force full access for internal requests
+    if (isInternal) {
+      modeHandler.state.mode = 'full_assistant';
+      modeHandler.state.authenticated = true;
+    }
 
     // Handle mode switching requests (PIN unlock, etc.)
     if (message?.type === 'transcript' && message?.transcriptType === 'partial') {
