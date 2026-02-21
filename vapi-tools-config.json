@@ -1,0 +1,390 @@
+{
+  "assistantName": "Jack",
+  "serverUrl": "https://jack-voice-server.vercel.app/api/vapi-webhook",
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "triage_inbox",
+        "description": "Check recent emails in business or personal inbox. Returns summary of emails.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "inbox": {
+              "type": "string",
+              "enum": ["business", "personal"],
+              "description": "Which inbox to check (default: business)"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "read_email",
+        "description": "Read full contents of a specific email by index or subject keyword",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "emailIndex": {
+              "type": "integer",
+              "description": "Number of the email (1-10) from inbox list"
+            },
+            "subject": {
+              "type": "string",
+              "description": "Subject keyword to search for"
+            },
+            "inbox": {
+              "type": "string",
+              "enum": ["business", "personal"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "delete_email",
+        "description": "Delete one or more emails by index or subject keyword",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "emailIndex": {
+              "type": "integer",
+              "description": "Number of the email to delete"
+            },
+            "subject": {
+              "type": "string",
+              "description": "Subject keyword - deletes all matching emails"
+            },
+            "inbox": {
+              "type": "string",
+              "enum": ["business", "personal"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "flag_email",
+        "description": "Flag or unflag an email for follow-up",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "emailIndex": {
+              "type": "integer"
+            },
+            "subject": {
+              "type": "string"
+            },
+            "action": {
+              "type": "string",
+              "enum": ["flag", "unflag"],
+              "description": "Flag or unflag the email"
+            },
+            "inbox": {
+              "type": "string",
+              "enum": ["business", "personal"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_calendar",
+        "description": "Get upcoming calendar events",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "timeframe": {
+              "type": "string",
+              "enum": ["today", "tomorrow", "week"],
+              "description": "Time range to check"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "schedule_appointment",
+        "description": "Schedule a new calendar appointment",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Name of the appointment"
+            },
+            "date": {
+              "type": "string",
+              "description": "Date in YYYY-MM-DD format or 'today'/'tomorrow'"
+            },
+            "time": {
+              "type": "string",
+              "description": "Time in HH:MM format (24h) or like '2pm'"
+            },
+            "duration": {
+              "type": "integer",
+              "description": "Duration in minutes (default 30)"
+            },
+            "attendeeEmail": {
+              "type": "string",
+              "description": "Email of person to invite (optional)"
+            },
+            "description": {
+              "type": "string",
+              "description": "Meeting description or notes"
+            }
+          },
+          "required": ["title", "date", "time"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_tasks",
+        "description": "Get tasks from Mission Control",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["todo", "in-progress", "review", "blocked"],
+              "description": "Filter by task status"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "create_task",
+        "description": "Create a new task in Mission Control",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Task title"
+            },
+            "description": {
+              "type": "string",
+              "description": "Task description"
+            },
+            "priority": {
+              "type": "string",
+              "enum": ["low", "normal", "high", "urgent"],
+              "description": "Task priority"
+            }
+          },
+          "required": ["title"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "capture_thought",
+        "description": "Capture a thought, idea, or note for later",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "thought": {
+              "type": "string",
+              "description": "The thought or note to capture"
+            },
+            "category": {
+              "type": "string",
+              "enum": ["note", "idea", "todo", "reminder"],
+              "description": "Type of thought"
+            }
+          },
+          "required": ["thought"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "lookup_contact",
+        "description": "Find a contact in CRM by name, phone, or email",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Contact name to search"
+            },
+            "phone": {
+              "type": "string",
+              "description": "Phone number to search"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email to search"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "create_contact",
+        "description": "Create a new contact in CRM",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "company": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Initial notes about the contact"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "add_contact_note",
+        "description": "Add a note to an existing contact's CRM record",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "contactName": {
+              "type": "string",
+              "description": "Name of the contact"
+            },
+            "note": {
+              "type": "string",
+              "description": "Note to add"
+            }
+          },
+          "required": ["contactName", "note"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "send_payment_link",
+        "description": "Send a Stripe payment link via SMS or email",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "phone": {
+              "type": "string",
+              "description": "Phone number to send SMS to"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email to send payment link to"
+            },
+            "amount": {
+              "type": "number",
+              "description": "Payment amount in dollars (optional)"
+            },
+            "description": {
+              "type": "string",
+              "description": "What the payment is for"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "lookup_invoice",
+        "description": "Look up invoices in the accounting system",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "invoiceNumber": {
+              "type": "string",
+              "description": "Specific invoice number to find"
+            },
+            "contactName": {
+              "type": "string",
+              "description": "Customer name to search invoices for"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["pending", "paid", "overdue"],
+              "description": "Filter by invoice status"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_services_info",
+        "description": "Get information about MPT services, pricing, and products",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "service": {
+              "type": "string",
+              "description": "Specific service to ask about (system-optimization, integration, custom-dev, ai-solutions, ams)"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "company_info",
+        "description": "Get general company information",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "topic": {
+              "type": "string",
+              "enum": ["services", "products", "pricing", "contact"],
+              "description": "What topic to get info about"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "check_deployments",
+        "description": "Check for recent deployment notifications and failures",
+        "parameters": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "jack-voice-server",
+  "version": "1.0.0",
+  "description": "Jack Voice Integration - Vapi webhook server for Metro Bot",
+  "main": "api/vapi-webhook.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18"
+  }
+}
