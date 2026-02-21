@@ -936,7 +936,10 @@ export default async function handler(req, res) {
     const { message } = req.body;
     
     // Check for internal mode (bypasses PIN requirement)
-    const isInternal = req.query?.internal === 'true' || req.url?.includes('internal=true');
+    // Parse URL manually since req.query may not be available
+    const urlParams = new URL(req.url, `https://${req.headers.host}`).searchParams;
+    const isInternal = urlParams.get('internal') === 'true' || req.query?.internal === 'true';
+    console.log('[VAPI] Internal mode:', isInternal, 'URL:', req.url);
 
     // Initialize mode handler for this session
     const modeHandler = createModeHandler(message);
