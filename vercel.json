@@ -1,3 +1,13 @@
 {
-  "version": 2
+  "version": 2,
+  "functions": {
+    "api/vapi-webhook.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    },
+    "api/internal-webhook.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
 }
